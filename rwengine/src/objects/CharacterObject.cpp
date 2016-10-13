@@ -271,6 +271,9 @@ glm::vec3 CharacterObject::updateMovementAnimation(float dt) {
         }
     }
 
+    if (currentAnim == animations->animation(AnimCycle::Sprint))
+        animTranslate *= 6.0f;
+
     return animTranslate;
 }
 
