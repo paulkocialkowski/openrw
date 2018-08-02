@@ -385,6 +385,18 @@ void VehicleObject::tickPhysics(float dt) {
             brakeF = 2.f * std::min(1.f + kM, 4.f);
         }
 
+        if (isStopped()) {
+            btVector3 v = collision->getBulletBody()->getLinearVelocity();
+            v.setX(0.f);
+
+            collision->getBulletBody()->setLinearVelocity(v);
+
+            for (int w = 0; w < physVehicle->getNumWheels(); ++w) {
+                btWheelInfo& wi = physVehicle->getWheelInfo(w);
+                wi.m_rotation = 0.f;
+            }
+        }
+
         for (int w = 0; w < physVehicle->getNumWheels(); ++w) {
             btWheelInfo& wi = physVehicle->getWheelInfo(w);
             if (info->handling.driveType == VehicleHandlingInfo::All ||
